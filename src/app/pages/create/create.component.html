@@ -78,6 +78,7 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
+
         <div class="row al-right field-form">
           <button
             mat-raised-button
@@ -87,7 +88,9 @@
           >
             Salvar
           </button>
-          <button mat-raised-button color="warn">Cancelar</button>
+          <button mat-raised-button color="warn" [routerLink]="['/']">
+            Cancelar
+          </button>
         </div>
       </div>
     </div>
