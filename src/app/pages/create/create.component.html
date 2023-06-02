@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col">
         <mat-form-field appearance="outline" class="field-form">
-          <mat-label>Nome</mat-label>
+          <mat-label>Nome*</mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
 
@@ -15,13 +15,16 @@
           <mat-label>Preço</mat-label>
           <input
             matInput
-            type="number"
+            type="text"
             class="example-right-align"
             placeholder="0"
             formControlName="cost"
+            mask="separator.2"
+            thousandSeparator="."
+            separatorLimit="1000"
+            [allowNegativeNumbers]="false"
           />
           <span matTextPrefix>R$&nbsp;</span>
-          <span matTextSuffix>.00</span>
         </mat-form-field>
       </div>
 
@@ -40,7 +43,12 @@
           appearance="outline"
         >
           <mat-label>Validade</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="validity" />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="validity"
+            [disabled]="validityDisabled()"
+          />
           <mat-datepicker-toggle
             matIconSuffix
             [for]="picker"
@@ -59,7 +67,15 @@
       <div class="col">
         <mat-form-field appearance="outline" class="field-form">
           <mat-label>Quantidade</mat-label>
-          <input matInput formControlName="quantity" />
+          <input
+            matInput
+            formControlName="quantity"
+            mask="separator.{{ decimalQuantity() }}"
+            thousandSeparator="."
+            separatorLimit="1000"
+            [allowNegativeNumbers]="false"
+          />
+          <span matTextSuffix>{{ suffixQuantity() }}</span>
         </mat-form-field>
 
         <mat-form-field

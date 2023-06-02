@@ -14,6 +14,7 @@ import { ProductElement } from "../../shared/interfaces/ProductElement";
 export class CreateComponent implements OnInit {
   public idProduct!: number;
   public data!: FormGroup;
+  public disableInput = false;
 
   constructor(
     public fb: FormBuilder,
@@ -33,7 +34,7 @@ export class CreateComponent implements OnInit {
       cost: ["", Validators.required],
       unit: ["", Validators.required],
       validity: ["", Validators.required],
-      perishable: ["", Validators.required],
+      perishable: ["true", Validators.required],
       quantity: ["", Validators.required],
       fabrication: ["", Validators.required],
     });
@@ -67,10 +68,12 @@ export class CreateComponent implements OnInit {
   }
 
   create(): void {
-    let newValidity: moment.Moment = moment
-      .utc(this.data.value.validity)
-      .local();
-    this.data.value.validity = newValidity.format("YYYY-MM-DD");
+    if (this.data.value.validity != "") {
+      let newValidity: moment.Moment = moment
+        .utc(this.data.value.validity)
+        .local();
+      this.data.value.validity = newValidity.format("YYYY-MM-DD");
+    }
 
     let newFabrication: moment.Moment = moment
       .utc(this.data.value.fabrication)
@@ -97,6 +100,28 @@ export class CreateComponent implements OnInit {
             console.log("Error occurred", err);
           }
         );
+    }
+  }
+
+  validityDisabled(): boolean {
+    return !this.data.value.perishable;
+  }
+
+  suffixQuantity(): string {
+    if (this.data.value.unit == "Litro") {
+      return "lt";
+    } else if (this.data.value.unit == "Quilograma") {
+      return "kg";
+    } else {
+      return "un";
+    }
+  }
+
+  decimalQuantity(): number {
+    if (this.data.value.unit == "Unidade") {
+      return 0;
+    } else {
+      return 3;
     }
   }
 }

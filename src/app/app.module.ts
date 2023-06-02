@@ -1,3 +1,4 @@
+import { NgxMaskModule } from "ngx-mask";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 
@@ -20,7 +21,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatNativeDateModule } from "@angular/material/core";
+import { MAT_DATE_LOCALE, MatNativeDateModule } from "@angular/material/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DialogModule } from "./shared/dialog/dialog.module";
 
@@ -47,8 +48,14 @@ import { DialogModule } from "./shared/dialog/dialog.module";
     FormsModule,
     ReactiveFormsModule,
     DialogModule,
+    NgxMaskModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: "pt-BR",
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
