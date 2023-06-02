@@ -1,0 +1,25 @@
+.container {
+    padding: 50px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 1000px;
+}
+
+.row {
+    display: flex;
+}
+
+.field-form {
+    margin-right: 40px;
+    width: 300px;
+}
+
+.btn-form {
+    margin-right: 20px;
+}
+
+.al-right {
+    display: flex;
+    justify-content: end;
+}
