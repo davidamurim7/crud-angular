@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { ProductElement } from "src/app/shared/interfaces/ProductElement";
 import { ProductElementService } from "../../core/services/productElement.service";
 import { Router } from "@angular/router";
@@ -28,6 +28,7 @@ export class HomeComponent {
   ];
   dataSource!: ProductElement[];
   @Input() currentDate = new Date().toISOString();
+  public searchTable = "";
 
   constructor(
     public productElementService: ProductElementService,
@@ -39,7 +40,7 @@ export class HomeComponent {
 
   refreshTable(): void {
     this.productElementService
-      .getElements()
+      .getElements(this.searchTable)
       .subscribe((data: ProductElement[]) => {
         this.dataSource = data;
       });
@@ -70,5 +71,13 @@ export class HomeComponent {
         );
       }
     });
+  }
+
+  search(): void {
+    this.productElementService
+      .getElements(this.searchTable)
+      .subscribe((data: ProductElement[]) => {
+        this.dataSource = data;
+      });
   }
 }

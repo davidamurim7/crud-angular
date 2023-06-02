@@ -87,10 +87,12 @@
             matInput
             [matDatepicker]="picker2"
             formControlName="fabrication"
+            [max]="maxDate"
           />
           <mat-datepicker-toggle
             matIconSuffix
             [for]="picker2"
+            (click)="getDateValidate()"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>

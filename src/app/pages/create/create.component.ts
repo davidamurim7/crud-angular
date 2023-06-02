@@ -15,6 +15,7 @@ export class CreateComponent implements OnInit {
   public idProduct!: number;
   public data!: FormGroup;
   public disableInput = false;
+  public maxDate!: Date;
 
   constructor(
     public fb: FormBuilder,
@@ -33,7 +34,7 @@ export class CreateComponent implements OnInit {
       ],
       cost: ["", Validators.required],
       unit: ["", Validators.required],
-      validity: ["", Validators.required],
+      validity: [""],
       perishable: ["true", Validators.required],
       quantity: ["", Validators.required],
       fabrication: ["", Validators.required],
@@ -58,7 +59,7 @@ export class CreateComponent implements OnInit {
             ],
             cost: [response.cost, Validators.required],
             unit: [response.unit, Validators.required],
-            validity: [response.validity, Validators.required],
+            validity: [response.validity],
             perishable: [response.perishable, Validators.required],
             quantity: [response.quantity, Validators.required],
             fabrication: [response.fabrication, Validators.required],
@@ -80,19 +81,12 @@ export class CreateComponent implements OnInit {
       .local();
     this.data.value.fabrication = newFabrication.format("YYYY-MM-DD");
 
-    if (!this.idProduct) {
-      this.productElementService.createElements(this.data.value).subscribe(
-        () => {
-          this.router.navigate(["/"]);
-        },
-        (err) => {
-          console.log("Error occurred", err);
-        }
-      );
-    } else {
-      this.productElementService
-        .editElement(this.idProduct, this.data.value)
-        .subscribe(
+    if (
+      this.data.value.validity == "" ||
+      this.data.value.fabrication < this.data.value.validity
+    ) {
+      if (!this.idProduct) {
+        this.productElementService.createElements(this.data.value).subscribe(
           () => {
             this.router.navigate(["/"]);
           },
@@ -100,10 +94,25 @@ export class CreateComponent implements OnInit {
             console.log("Error occurred", err);
           }
         );
+      } else {
+        this.productElementService
+          .editElement(this.idProduct, this.data.value)
+          .subscribe(
+            () => {
+              this.router.navigate(["/"]);
+            },
+            (err) => {
+              console.log("Error occurred", err);
+            }
+          );
+      }
     }
   }
 
   validityDisabled(): boolean {
+    if (!this.data.value.perishable) {
+      this.data.value.validity = "";
+    }
     return !this.data.value.perishable;
   }
 
@@ -122,6 +131,14 @@ export class CreateComponent implements OnInit {
       return 0;
     } else {
       return 3;
+    }
+  }
+
+  getDateValidate(): void {
+    if (this.data.value.validity != "") {
+      this.maxDate = this.data.value.validity;
+    } else {
+      this.maxDate = new Date();
     }
   }
 }

@@ -1,12 +1,19 @@
 <div class="container">
-  <button
-    class="btn-margin"
-    mat-raised-button
-    color="primary"
-    [routerLink]="['/create']"
-  >
-    Adicionar
-  </button>
+  <div class="top-table">
+    <button mat-raised-button color="primary" [routerLink]="['/create']">
+      Adicionar
+    </button>
+    <mat-form-field appearance="outline" class="field-form">
+      <mat-label>Busca</mat-label>
+      <input
+        type="text"
+        matInput
+        (keyup)="search()"
+        [(ngModel)]="searchTable"
+      />
+    </mat-form-field>
+  </div>
+
   <table mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Nome</th>
@@ -19,14 +26,12 @@
     <ng-container matColumnDef="quantity">
       <th mat-header-cell *matHeaderCellDef>Quantidade</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.quantity.toFixed(3) }}
+        {{ element.quantity }}
       </td>
     </ng-container>
     <ng-container matColumnDef="cost">
       <th mat-header-cell *matHeaderCellDef>Preço</th>
-      <td mat-cell *matCellDef="let element">
-        R$ {{ element.cost.toFixed(3) }}
-      </td>
+      <td mat-cell *matCellDef="let element">R$ {{ element.cost }}</td>
     </ng-container>
     <ng-container matColumnDef="perishable">
       <th mat-header-cell *matHeaderCellDef>Perecível</th>
